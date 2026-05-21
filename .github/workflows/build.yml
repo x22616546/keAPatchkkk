@@ -71,11 +71,7 @@ jobs:
           
 
     
-      - name: Upload mappings
-        uses: actions/upload-artifact@v5
-        with:
-          name: "mappings"
-          path: "app/build/outputs/mapping/release/"
+    
 
       - name: Upload build artifact
         
@@ -83,6 +79,5 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: APatch
-          path: |
-            ${{ steps.sign_app.outputs.signedReleaseFile }}
-            ${{ steps.sign_debug_app.outputs.signedReleaseFile }}
+          path: app/build/outputs/apk/debug/*.apk
+          
