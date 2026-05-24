@@ -92,8 +92,7 @@ import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.reboot
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+
 private const val TAG = "Patches"
 
 @Destination<RootGraph>
@@ -202,24 +201,19 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
                         }
                     )
                 }
-             Box(
-    modifier = Modifier
-        .fillMaxWidth()
-        .height(60.dp)
-) {
-    AnimatedVisibility(
-        visible = needKey,
-        // 缩放动画替代展开，高度不变
-        enter = scaleIn(initialScale = 0.95f) + fadeIn(),
-        exit = scaleOut(targetScale = 0.95f) + fadeOut()
-    ) {
-        Column {
-            Spacer(modifier = Modifier.height(8.dp))
-            SetSuperKeyView(viewModel)
-        }
-    }
-}  
-               
+
+                AnimatedVisibility(
+                    visible = needKey,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    Column {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        SetSuperKeyView(viewModel)
+                    }
+                }
+            }
+
             // existed extras
             if (mode == PatchesViewModel.PatchMode.PATCH_AND_INSTALL || mode == PatchesViewModel.PatchMode.INSTALL_TO_NEXT_SLOT) {
                 viewModel.existedExtras.forEach(action = {
