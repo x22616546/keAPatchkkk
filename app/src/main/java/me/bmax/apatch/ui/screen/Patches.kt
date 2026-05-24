@@ -92,6 +92,13 @@ import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.reboot
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
+// 动画tween函数（解决Unresolved reference: tween）
+import androidx.compose.animation.tween
+// 输入法适配（解决Unresolved reference: imePadding）
+import androidx.compose.foundation.layout.imePadding
+// 焦点控制（修复输入法抖动必加）
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 
 private const val TAG = "Patches"
 
@@ -202,17 +209,34 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
                     )
                 }
 
-                AnimatedVisibility(
-                    visible = needKey,
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut()
-                ) {
-                    Column {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        SetSuperKeyView(viewModel)
-                    }
-                }
-            }
+               AnimatedVisibility(
+                   visible = needKey,
+                   // 新增：补全tween参数+指定动画锚点
+                   enter = expandVertically(
+                       expandFrom = Alignment.Top,
+                       animationSpec = tween(durationMillis = 150)
+                   ) + fadeIn(
+                       animationSpec = tween(durationMillis = 150)
+                   ),
+                   exit = shrinkVertically(
+                       shrinkTowards = Alignment.Top,
+                       animationSpec = tween(durationMillis = 150)
+                   ) + fadeOut(
+                       animationSpec = tween(durationMillis = 150)
+                   ),
+                   // 新增：补全wrapContentHeight参数，避免布局抖动
+                   modifier = Modifier.wrapContentHeight(align = Alignment.Top, unbounded = true)
+               ) {
+                   Column(
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           // 新增：imePadding适配输入法
+                           .imePadding()
+                   ) {
+                       Spacer(modifier = Modifier.height(8.dp))
+                       SetSuperKeyView(viewModel)
+                   }
+               }
 
             // existed extras
             if (mode == PatchesViewModel.PatchMode.PATCH_AND_INSTALL || mode == PatchesViewModel.PatchMode.INSTALL_TO_NEXT_SLOT) {
