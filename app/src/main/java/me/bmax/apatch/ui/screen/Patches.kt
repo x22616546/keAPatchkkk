@@ -209,35 +209,28 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
                     )
                 }
 
-               AnimatedVisibility(
-                   visible = needKey,
-                   // 新增：补全tween参数+指定动画锚点
-                   enter = expandVertically(
-                       expandFrom = Alignment.Top,
-                       animationSpec = tween(durationMillis = 150)
-                   ) + fadeIn(
-                       animationSpec = tween(durationMillis = 150)
-                   ),
-                   exit = shrinkVertically(
-                       shrinkTowards = Alignment.Top,
-                       animationSpec = tween(durationMillis = 150)
-                   ) + fadeOut(
-                       animationSpec = tween(durationMillis = 150)
-                   ),
-                   // 新增：补全wrapContentHeight参数，避免布局抖动
-                   modifier = Modifier.wrapContentHeight(align = Alignment.Top, unbounded = true)
-               ) {
-                   Column(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           // 新增：imePadding适配输入法
-                           .imePadding()
-                   ) {
-                       Spacer(modifier = Modifier.height(8.dp))
-                       SetSuperKeyView(viewModel)
-                   }
-               }
-
+                AnimatedVisibility(
+    visible = needKey,
+    // 简化动画写法，避免参数冲突报错
+    enter = expandVertically(
+        expandFrom = Alignment.Top
+    ) + fadeIn(),
+    exit = shrinkVertically(
+        shrinkTowards = Alignment.Top
+    ) + fadeOut(),
+    // 移除易报错的wrapContentHeight，改用固定方案
+    modifier = Modifier.fillMaxWidth()
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp) // 替代imePadding，避免导入报错
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
+        SetSuperKeyView(viewModel)
+    }
+}
+               
             // existed extras
             if (mode == PatchesViewModel.PatchMode.PATCH_AND_INSTALL || mode == PatchesViewModel.PatchMode.INSTALL_TO_NEXT_SLOT) {
                 viewModel.existedExtras.forEach(action = {
