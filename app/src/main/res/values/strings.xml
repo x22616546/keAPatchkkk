@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">APatch</string>
-
+   <string name="clear_super_key">Clear SuperKey</string>
+   <string name="home_auth_key_title">Enter SuperKey</string>
+   <string name="home_auth_key_desc">Start after certification</string>
+   <string name="settings_donot_store_superkey">Don\'t store SuperKey in local</string>
+   <string name="settings_donot_store_superkey_summary">Authenticate the SuperKey every time the manager starts</string>
+    <string name="home_dialog_auth_fail_title">Authentication failed</string>
+    <string name="home_dialog_auth_fail_content">Unable to authenticate the SuperKey, therefore APatch cannot work properly.\nHere are some possible reasons for authentication failure:\n1. You didn\'t patch the boot.img with KernelPatch.\n2. The patched boot.img wasn\'t flashed.\n3. The SuperKey is wrong or contains special characters.\n4. Your device doesn\'t support APatch and KernelPatch.\n\nPlease check and try again. If there are still issues, you can always ask questions on the official repository\'s issues page.</string>
+    
     <string name="home">Home</string>
 
     <string name="search">Search</string>
