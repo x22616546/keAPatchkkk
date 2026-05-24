@@ -92,14 +92,8 @@ import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.reboot
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
-// 动画tween函数（解决Unresolved reference: tween）
-import androidx.compose.animation.tween
-// 输入法适配（解决Unresolved reference: imePadding）
-import androidx.compose.foundation.layout.imePadding
-// 焦点控制（修复输入法抖动必加）
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 private const val TAG = "Patches"
 
 @Destination<RootGraph>
@@ -208,28 +202,23 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
                         }
                     )
                 }
-
-                AnimatedVisibility(
-    visible = needKey,
-    // 简化动画写法，避免参数冲突报错
-    enter = expandVertically(
-        expandFrom = Alignment.Top
-    ) + fadeIn(),
-    exit = shrinkVertically(
-        shrinkTowards = Alignment.Top
-    ) + fadeOut(),
-    // 移除易报错的wrapContentHeight，改用固定方案
-    modifier = Modifier.fillMaxWidth()
+             Box(
+    modifier = Modifier
+        .fillMaxWidth()
+        .height(60.dp)
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp) // 替代imePadding，避免导入报错
+    AnimatedVisibility(
+        visible = needKey,
+        // 缩放动画替代展开，高度不变
+        enter = scaleIn(initialScale = 0.95f) + fadeIn(),
+        exit = scaleOut(targetScale = 0.95f) + fadeOut()
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
-        SetSuperKeyView(viewModel)
+        Column {
+            Spacer(modifier = Modifier.height(8.dp))
+            SetSuperKeyView(viewModel)
+        }
     }
-}
+}  
                
             // existed extras
             if (mode == PatchesViewModel.PatchMode.PATCH_AND_INSTALL || mode == PatchesViewModel.PatchMode.INSTALL_TO_NEXT_SLOT) {
