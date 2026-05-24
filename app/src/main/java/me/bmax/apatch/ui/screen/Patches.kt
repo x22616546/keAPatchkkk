@@ -202,25 +202,16 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
                     )
                 }
 
-               AnimatedVisibility(
-                   visible = needKey,
-                   // 1. 调整动画锚点+缩短时长，减少布局波动
-                   enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(animationSpec = tween(150)),
-                   exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut(animationSpec = tween(150)),
-                   // 2. 关键：让动画不改变父布局的高度计算
-                   modifier = Modifier.wrapContentHeight(unbounded = true)
-               ) {
-                   Column(
-                  // 3. 适配输入法+固定宽度，避免布局偏移
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .imePadding() // 让输入框和输入法适配，不被遮挡
-                   ) {
-                       Spacer(modifier = Modifier.height(8.dp))
-                       SetSuperKeyView(viewModel)
-                   }
-               }
-             
+                AnimatedVisibility(
+                    visible = needKey,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut()
+                ) {
+                    Column {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        SetSuperKeyView(viewModel)
+                    }
+                }
             }
 
             // existed extras
