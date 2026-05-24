@@ -204,8 +204,8 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
 
                 AnimatedVisibility(
                     visible = needKey,
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut()
+                    enter = fadeIn(),
+                    exit = fadeOut()
                 ) {
                     Column {
                         Spacer(modifier = Modifier.height(8.dp))
